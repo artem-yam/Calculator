@@ -1,4 +1,4 @@
-package com.epam.jtc.calculator.Output;
+package com.epam.jtc.calculator.output;
 
 public interface InfoOutput {
 

@@ -1,4 +1,4 @@
-package com.epam.jtc.calculator.Input;
+package com.epam.jtc.calculator.input;
 
 import java.util.Scanner;
 

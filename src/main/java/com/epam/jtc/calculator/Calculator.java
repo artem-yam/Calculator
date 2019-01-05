@@ -1,7 +1,7 @@
 package com.epam.jtc.calculator;
 
-import com.epam.jtc.calculator.Output.ConsoleInfoOutput;
-import com.epam.jtc.calculator.Output.InfoOutput;
+import com.epam.jtc.calculator.output.ConsoleInfoOutput;
+import com.epam.jtc.calculator.output.InfoOutput;
 
 import java.util.ArrayList;
 import java.util.Collections;

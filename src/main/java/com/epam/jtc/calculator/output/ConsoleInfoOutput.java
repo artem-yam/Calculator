@@ -1,9 +1,9 @@
-package com.epam.jtc.calculator.Output;
+package com.epam.jtc.calculator.output;
 
 public class ConsoleInfoOutput implements InfoOutput {
 
-    private static final String RADIX_REQUEST = "Input radix: ";
-    private static final String EXPRESSION_REQUEST = "Input new expression: ";
+    private static final String RADIX_REQUEST = "input radix: ";
+    private static final String EXPRESSION_REQUEST = "input new expression: ";
     private final static String OPERATION_RESULT = "Result: %s\n";
 
 
