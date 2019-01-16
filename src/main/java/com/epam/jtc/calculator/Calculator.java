@@ -1,12 +1,13 @@
 package com.epam.jtc.calculator;
 
+import com.epam.jtc.calculator.input.ConsoleInfoInput;
+import com.epam.jtc.calculator.input.InfoInput;
 import com.epam.jtc.calculator.output.ConsoleInfoOutput;
 import com.epam.jtc.calculator.output.InfoOutput;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Scanner;
 
 public class Calculator {
 
@@ -19,7 +20,7 @@ public class Calculator {
 
 
     private InfoOutput infoOutput = new ConsoleInfoOutput();
-    private Scanner infoInput = new Scanner(System.in);
+    private InfoInput infoInput = new ConsoleInfoInput();
     private CalculatorEngine calculationEngine = new DecimalCalculator();
 
     public static void main(String[] args) {
@@ -28,21 +29,21 @@ public class Calculator {
 
         calculator.processCalculation();
 
-        calculator.infoInput.close();
+        calculator.infoInput.closeResource();
     }
 
     private void processCalculation() {
         infoOutput.requestRadix();
 
-        selectCalculationEngine(infoInput.nextLine());
+        selectCalculationEngine(infoInput.getNextLine());
 
         infoOutput.requestNewExpression();
 
-        while (infoInput.hasNext()) {
+        while (infoInput.canRead()) {
             String expression = "";
 
             while (expression.isEmpty()) {
-                expression = infoInput.nextLine().trim();
+                expression = infoInput.getNextLine();
             }
 
             calculate(expression);
@@ -79,7 +80,8 @@ public class Calculator {
     }
 
     private void getValuesAndOperations(List<String> values,
-            List<String> operations, String expression) {
+                                        List<String> operations,
+                                        String expression) {
         String[] s2 = expression.split(REGEX_TO_SPLIT_OPERATIONS_VALUES);
         String[] s3 = expression.split(REGEX_TO_SPLIT_OPERATIONS_SIGNS);
 

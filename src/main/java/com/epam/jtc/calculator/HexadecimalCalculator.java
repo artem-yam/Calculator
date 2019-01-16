@@ -2,7 +2,6 @@ package com.epam.jtc.calculator;
 
 public class HexadecimalCalculator implements CalculatorEngine {
 
-
     @Override
     public String add(String x, String y) {
         long result = Long.parseLong(x, 16) + Long.parseLong(y, 16);
