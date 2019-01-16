@@ -1,4 +1,4 @@
-package com.epam.jtc.calculator.input;
+package com.epam.jtc.calculator.utils.input;
 
 public interface InfoInput {
 

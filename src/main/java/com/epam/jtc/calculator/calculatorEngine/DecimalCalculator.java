@@ -1,6 +1,7 @@
-package com.epam.jtc.calculator;
+package com.epam.jtc.calculator.calculatorEngine;
 
-public class DecimalCalculator implements CalculatorEngine {
+public class
+DecimalCalculator implements CalculatorEngine {
 
     @Override
     public String add(String x, String y) {

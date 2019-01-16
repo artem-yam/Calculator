@@ -1,10 +1,10 @@
-package com.epam.jtc.calculator.input;
+package com.epam.jtc.calculator.utils.input;
 
 import java.util.Scanner;
 
 public class ConsoleInfoInput implements InfoInput {
 
-    private static final Scanner scanner = new Scanner(System.in);
+    private Scanner scanner = new Scanner(System.in);
 
     @Override
     public String getNextLine() {

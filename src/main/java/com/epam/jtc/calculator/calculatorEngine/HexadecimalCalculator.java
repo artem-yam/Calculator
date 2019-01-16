@@ -1,4 +1,4 @@
-package com.epam.jtc.calculator;
+package com.epam.jtc.calculator.calculatorEngine;
 
 public class HexadecimalCalculator implements CalculatorEngine {
 

@@ -1,9 +1,12 @@
 package com.epam.jtc.calculator;
 
-import com.epam.jtc.calculator.input.ConsoleInfoInput;
-import com.epam.jtc.calculator.input.InfoInput;
-import com.epam.jtc.calculator.output.ConsoleInfoOutput;
-import com.epam.jtc.calculator.output.InfoOutput;
+import com.epam.jtc.calculator.calculatorEngine.CalculatorEngine;
+import com.epam.jtc.calculator.calculatorEngine.DecimalCalculator;
+import com.epam.jtc.calculator.calculatorEngine.HexadecimalCalculator;
+import com.epam.jtc.calculator.utils.input.ConsoleInfoInput;
+import com.epam.jtc.calculator.utils.input.InfoInput;
+import com.epam.jtc.calculator.utils.output.ConsoleInfoOutput;
+import com.epam.jtc.calculator.utils.output.InfoOutput;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +24,7 @@ public class Calculator {
 
     private InfoOutput infoOutput = new ConsoleInfoOutput();
     private InfoInput infoInput = new ConsoleInfoInput();
-    private CalculatorEngine calculationEngine = new DecimalCalculator();
+    private CalculatorEngine calculationEngine = null;
 
     public static void main(String[] args) {
 
@@ -32,35 +35,57 @@ public class Calculator {
         calculator.infoInput.closeResource();
     }
 
-    private void processCalculation() {
-        infoOutput.requestRadix();
+    public InfoInput getInfoInput() {
+        return infoInput;
+    }
 
-        selectCalculationEngine(infoInput.getNextLine());
+    public void processCalculation() {
 
-        infoOutput.requestNewExpression();
+        do {
+            infoOutput.showRadixRequest();
+
+            selectCalculationEngine(infoInput.getNextLine());
+        } while (calculationEngine == null);
+
+        infoOutput.showExpressionRequest();
 
         while (infoInput.canRead()) {
-            String expression = "";
+            String expression;
 
-            while (expression.isEmpty()) {
+            do {
                 expression = infoInput.getNextLine();
-            }
+            } while (expression.isEmpty());
 
             calculate(expression);
 
-            infoOutput.requestNewExpression();
+            infoOutput.showExpressionRequest();
         }
     }
 
-    private void selectCalculationEngine(String radix) {
-        switch (radix) {
-            case "16":
-                calculationEngine = new HexadecimalCalculator();
+    private void selectCalculationEngine(String inputedRadix) {
+        SupportedRadixEnum radix = null;
+
+        for (SupportedRadixEnum supportedRadix : SupportedRadixEnum.values()) {
+            if (inputedRadix.equals(supportedRadix.getRadix())) {
+                radix = supportedRadix;
                 break;
-            default:
-                calculationEngine = new DecimalCalculator();
-                break;
+            }
         }
+
+
+        if (radix == null) {
+            infoOutput.showUnsupportedRadixError(inputedRadix);
+        } else {
+            switch (radix) {
+                case HEXADECIMAL:
+                    calculationEngine = new HexadecimalCalculator();
+                    break;
+                case DECIMAL:
+                    calculationEngine = new DecimalCalculator();
+                    break;
+            }
+        }
+
     }
 
     private void calculate(String expression) {
