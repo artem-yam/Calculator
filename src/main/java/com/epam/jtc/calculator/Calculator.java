@@ -19,7 +19,7 @@ public class Calculator {
     private static final String REGEX_TO_SPLIT_OPERATIONS_VALUES =
             "[()\\s]*[+\\-*/]+[()\\s]*";
     private static final String REGEX_TO_SPLIT_OPERATIONS_SIGNS =
-            "[()\\s]*[.,\\w]+[()\\s]*";
+            "[()\\s]*[.,\\w[а-яА-Я]*]+[()\\s]*";
 
 
     private InfoOutput infoOutput = new ConsoleInfoOutput();
