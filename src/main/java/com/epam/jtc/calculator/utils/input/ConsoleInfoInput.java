@@ -13,7 +13,7 @@ public class ConsoleInfoInput implements InfoInput {
 
     @Override
     public boolean canRead() {
-        return scanner.hasNext();
+        return scanner.hasNextLine();
     }
 
     @Override

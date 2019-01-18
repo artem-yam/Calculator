@@ -7,6 +7,14 @@ public class ConsoleInfoOutput implements InfoOutput {
             "Unsupported radix: %s. " + "Please, try another one.\n";
     private static final String EXPRESSION_REQUEST = "Input new expression: ";
     private final static String OPERATION_RESULT = "Result: %s\n";
+    private final static String CHANGE_INPUT = "Please change your input.\n";
+    private final static String TOO_MANY_OPERATORS =
+            "Too many operators! ";
+    private final static String EMPTY_EXPRESSION =
+            "Empty expression! ";
+    private final static String NUMBER_FORMAT_EXCEPTION_MESSAGE =
+            "%s: Argument is too long or contains unsupported " +
+                    "characters for current number system\n";
 
 
     @Override
@@ -25,23 +33,32 @@ public class ConsoleInfoOutput implements InfoOutput {
     }
 
     @Override
-    public void showErrors(Throwable... errors) {
-        for (Throwable error : errors) {
+    public void showException(Throwable error) {
+
+        if (error.getClass().equals(NumberFormatException.class)) {
+            System.err
+                    .format(NUMBER_FORMAT_EXCEPTION_MESSAGE,
+                            error.getMessage());
+        } else {
             error.printStackTrace();
-            System.err.println("----------------------");
-            System.err.println(
-                    "Class name = " + error.getStackTrace()[0].getClassName());
-            System.err.println("----------------------");
-            System.err.println(
-                    "File name = " + error.getStackTrace()[0].getFileName());
-            System.err.println("----------------------");
-            System.err.println("Method name = " +
-                    error.getStackTrace()[0].getMethodName());
         }
+        
     }
 
     @Override
     public void showUnsupportedRadixError(String radix) {
-        System.out.printf(UNSUPPORTED_RADIX, radix);
+        System.err.printf(UNSUPPORTED_RADIX, radix);
+    }
+
+    @Override
+    public void showTooManyOperatorsWarning() {
+        System.err.print(TOO_MANY_OPERATORS);
+        System.err.print(CHANGE_INPUT);
+    }
+
+    @Override
+    public void showEmptyInputWarning() {
+        System.err.print(EMPTY_EXPRESSION);
+        System.err.print(CHANGE_INPUT);
     }
 }
