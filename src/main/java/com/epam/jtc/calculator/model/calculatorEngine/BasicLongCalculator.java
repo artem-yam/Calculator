@@ -1,4 +1,4 @@
-package com.epam.jtc.calculator.calculatorEngine;
+package com.epam.jtc.calculator.model.calculatorEngine;
 
 abstract class BasicLongCalculator implements CalculatorEngine {
 

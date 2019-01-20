@@ -1,38 +1,37 @@
 package com.epam.jtc.calculator;
 
-import com.epam.jtc.calculator.calculatorEngine.CalculatorEngine;
-import com.epam.jtc.calculator.calculatorEngine.DecimalLongCalculator;
-import com.epam.jtc.calculator.calculatorEngine.HexadecimalLongCalculator;
+import com.epam.jtc.calculator.model.CalculatorConfigurator;
+import com.epam.jtc.calculator.utils.ExpressionReformer;
+import com.epam.jtc.calculator.model.SupportedOperationsEnum;
 import com.epam.jtc.calculator.utils.input.ConsoleInfoInput;
 import com.epam.jtc.calculator.utils.input.InfoInput;
 import com.epam.jtc.calculator.utils.output.ConsoleInfoOutput;
 import com.epam.jtc.calculator.utils.output.InfoOutput;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-//TODO проверить все классы по SOLID
 public class Calculator {
 
     private static final String UNSUPPORTED_OPERATION =
             "Unsupported operation %s";
-    private static final String REGEX_TO_SPLIT_OPERATIONS_VALUES =
-            "[()\\s]*[+\\-*/]+[()\\s]*";
-    private static final String REGEX_TO_SPLIT_OPERATIONS_SIGNS =
-            "[()\\s]*[.,\\w[а-яА-Я]*]+[()\\s]*";
     private static final String STRING_WITH_ZERO = "0";
 
 
     private InfoOutput infoOutput = new ConsoleInfoOutput();
     private InfoInput infoInput = new ConsoleInfoInput();
-    private CalculatorEngine calculationEngine = null;
+
+    private CalculatorConfigurator configuration =
+            new CalculatorConfigurator();
+
+    private ExpressionReformer expressionReformer =
+            new ExpressionReformer();
 
     public static void main(String[] args) {
 
         Calculator calculator = new Calculator();
 
-        calculator.processCalculation();
+        calculator.startCalculations();
 
         calculator.infoInput.closeResource();
     }
@@ -41,13 +40,20 @@ public class Calculator {
         return infoInput;
     }
 
-    public void processCalculation() {
+    public void startCalculations() {
 
         do {
             infoOutput.showRadixRequest();
 
-            selectCalculationEngine(infoInput.getNextLine());
-        } while (calculationEngine == null);
+            try {
+                configuration.selectCalculationEngine(infoInput.getNextLine());
+
+            } catch (IllegalArgumentException illegalArgumentException) {
+                infoOutput.showUnsupportedRadixError(
+                        illegalArgumentException.getMessage());
+            }
+
+        } while (configuration.getCalculationEngine() == null);
 
         infoOutput.showExpressionRequest();
 
@@ -57,7 +63,7 @@ public class Calculator {
             if (expression.isEmpty()) {
                 infoOutput.showEmptyInputWarning();
             } else {
-                calculate(expression);
+                processExpression(expression);
             }
 
             infoOutput.showExpressionRequest();
@@ -65,39 +71,16 @@ public class Calculator {
 
     }
 
-    //TODO вынести в отдельный класс
-    private void selectCalculationEngine(String inputedRadix) {
-        SupportedNumberSystemEnum radix = null;
-
-        for (SupportedNumberSystemEnum supportedRadix : SupportedNumberSystemEnum
-                .values()) {
-            if (inputedRadix.equals(supportedRadix.getRadix())) {
-                radix = supportedRadix;
-                break;
-            }
-        }
-
-
-        if (radix == null) {
-            infoOutput.showUnsupportedRadixError(inputedRadix);
-        } else {
-            switch (radix) {
-                case HEXADECIMAL:
-                    calculationEngine = new HexadecimalLongCalculator();
-                    break;
-                case DECIMAL:
-                    calculationEngine = new DecimalLongCalculator();
-                    break;
-            }
-        }
-
-    }
-
-    private void calculate(String expression) {
+    private void processExpression(String expression) {
         List<String> arguments = new ArrayList<>();
         List<String> operators = new ArrayList<>();
 
-        formArgumentsAndOperatorsLists(arguments, operators, expression);
+        try {
+            expressionReformer.formArgumentsAndOperatorsLists(arguments,
+                    operators, expression);
+        } catch (IllegalArgumentException illegalArgumentException) {
+            infoOutput.showTooManyOperatorsWarning();
+        }
 
         if (!arguments.isEmpty()) {
 
@@ -110,8 +93,7 @@ public class Calculator {
                     operation = operators.get(i);
                 }
 
-                result = calculate(result, arguments.get(i),
-                        operation);
+                result = calculate(result, arguments.get(i), operation);
 
                 if (!((arguments.size() > 1 && i == 0) || result.isEmpty())) {
                     infoOutput.showOperationResult(result);
@@ -121,27 +103,13 @@ public class Calculator {
     }
 
 
-    private void formArgumentsAndOperatorsLists(List<String> formedArguments,
-                                                List<String> formedOperators,
-                                                String expression) {
-        String[] arguments = expression.split(REGEX_TO_SPLIT_OPERATIONS_VALUES);
-        String[] operators = expression.split(REGEX_TO_SPLIT_OPERATIONS_SIGNS);
-
-        if (operators.length > arguments.length) {
-            infoOutput.showTooManyOperatorsWarning();
-            //  formedOperators.remove(formedOperators.size() - 1);
-        } else {
-            Collections.addAll(formedArguments, arguments);
-            Collections.addAll(formedOperators, operators);
-        }
-    }
-
     private String calculate(String x, String y, String suggestedOperation) {
         String result = "";
 
         SupportedOperationsEnum operation = null;
 
-        for (SupportedOperationsEnum supportedOperation : SupportedOperationsEnum
+        for (SupportedOperationsEnum supportedOperation :
+                SupportedOperationsEnum
                 .values()) {
             if (suggestedOperation.equals(supportedOperation.getSign())) {
                 operation = supportedOperation;
@@ -150,34 +118,39 @@ public class Calculator {
         }
 
         try {
-            if (x.equals("")) {
-                result = calculationEngine.add(STRING_WITH_ZERO, y);
-            } else if (y.equals("")) {
-                result = calculationEngine.add(x, STRING_WITH_ZERO);
+            if (x.isEmpty()) {
+                result = configuration.getCalculationEngine().add(
+                        STRING_WITH_ZERO, y);
+            } else if (y.isEmpty()) {
+                result = configuration.getCalculationEngine().add(x,
+                        STRING_WITH_ZERO);
             } else if (operation == null) {
                 result = String.format(UNSUPPORTED_OPERATION,
                         suggestedOperation);
             } else {
 
-
                 switch (operation) {
                     case ADD:
-                        result = calculationEngine.add(x, y);
+                        result = configuration.getCalculationEngine().add(x, y);
                         break;
                     case SUBTRACT:
-                        result = calculationEngine.subtract(x, y);
+                        result = configuration.getCalculationEngine().subtract(
+                                x, y);
                         break;
                     case MULTIPLY:
-                        result = calculationEngine.multiply(x, y);
+                        result = configuration.getCalculationEngine().multiply(
+                                x, y);
                         break;
                     case DIVIDE:
-                        result = calculationEngine.divide(x, y);
+                        result = configuration.getCalculationEngine().divide(x,
+                                y);
                         break;
                 }
 
             }
         } catch (NumberFormatException numberFormatException) {
-            infoOutput.showException(numberFormatException);
+            infoOutput.showWrongNuberFormatError(
+                    numberFormatException.getMessage());
         }
 
 

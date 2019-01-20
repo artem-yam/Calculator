@@ -8,9 +8,9 @@ public interface InfoOutput {
 
     void showOperationResult(String result);
 
-    void showException(Throwable error);
-
     void showUnsupportedRadixError(String radix);
+
+    void showWrongNuberFormatError(String message);
 
     void showTooManyOperatorsWarning();
 

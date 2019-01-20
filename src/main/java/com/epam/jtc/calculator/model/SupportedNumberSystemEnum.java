@@ -1,4 +1,4 @@
-package com.epam.jtc.calculator;
+package com.epam.jtc.calculator.model;
 
 public enum SupportedNumberSystemEnum {
     DECIMAL("10"), HEXADECIMAL("16");
