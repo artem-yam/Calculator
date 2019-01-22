@@ -8,11 +8,11 @@ public interface InfoOutput {
 
     void showOperationResult(String result);
 
-    void showUnsupportedRadixError(String radix);
+    void showUnsupportedRadixError(Throwable exception);
 
-    void showWrongNuberFormatError(String message);
+    void showWrongNumberFormatError(String message);
 
-    void showTooManyOperatorsWarning();
+    void showTooManyOperatorsWarning(Throwable exception);
 
     void showEmptyInputWarning();
 }

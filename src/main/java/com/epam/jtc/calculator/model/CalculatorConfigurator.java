@@ -6,6 +6,8 @@ import com.epam.jtc.calculator.model.calculatorEngine.HexadecimalLongCalculator;
 
 public class CalculatorConfigurator {
 
+    private final static String UNSUPPORTED_RADIX = "Unsupported radix: %s. ";
+
     private CalculatorEngine calculationEngine = null;
 
     public CalculatorEngine getCalculationEngine() {
@@ -17,7 +19,7 @@ public class CalculatorConfigurator {
 
         for (SupportedNumberSystemEnum supportedRadix :
                 SupportedNumberSystemEnum
-                .values()) {
+                        .values()) {
             if (inputedRadix.equals(supportedRadix.getRadix())) {
                 radix = supportedRadix;
                 break;
@@ -25,7 +27,8 @@ public class CalculatorConfigurator {
         }
 
         if (radix == null) {
-            throw new IllegalArgumentException(inputedRadix);
+            throw new IllegalArgumentException(
+                    String.format(UNSUPPORTED_RADIX, inputedRadix));
         } else {
             switch (radix) {
                 case HEXADECIMAL:

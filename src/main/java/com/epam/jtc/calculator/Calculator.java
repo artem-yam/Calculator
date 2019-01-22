@@ -50,7 +50,7 @@ public class Calculator {
 
             } catch (IllegalArgumentException illegalArgumentException) {
                 infoOutput.showUnsupportedRadixError(
-                        illegalArgumentException.getMessage());
+                        illegalArgumentException);
             }
 
         } while (configuration.getCalculationEngine() == null);
@@ -79,7 +79,7 @@ public class Calculator {
             expressionReformer.formArgumentsAndOperatorsLists(arguments,
                     operators, expression);
         } catch (IllegalArgumentException illegalArgumentException) {
-            infoOutput.showTooManyOperatorsWarning();
+            infoOutput.showTooManyOperatorsWarning(illegalArgumentException);
         }
 
         if (!arguments.isEmpty()) {
@@ -149,7 +149,7 @@ public class Calculator {
 
             }
         } catch (NumberFormatException numberFormatException) {
-            infoOutput.showWrongNuberFormatError(
+            infoOutput.showWrongNumberFormatError(
                     numberFormatException.getMessage());
         }
 
