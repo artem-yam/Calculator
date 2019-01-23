@@ -15,32 +15,31 @@ public class CalculatorConfigurator {
     }
 
     public void selectCalculationEngine(String inputedRadix) {
-        SupportedNumberSystemEnum radix = null;
+        NumberSystems radix = NumberSystems.UNSUPPORTED;
 
-        for (SupportedNumberSystemEnum supportedRadix :
-                SupportedNumberSystemEnum
+        for (NumberSystems supportedRadix :
+                NumberSystems
                         .values()) {
-            if (inputedRadix.equals(supportedRadix.getRadix())) {
+            if (supportedRadix.getRadix().equals(inputedRadix)) {
                 radix = supportedRadix;
                 break;
             }
         }
 
-        if (radix == null) {
-            throw new IllegalArgumentException(
-                    String.format(UNSUPPORTED_RADIX, inputedRadix));
-        } else {
-            switch (radix) {
-                case HEXADECIMAL:
-                    calculationEngine = new HexadecimalLongCalculator();
-                    break;
-                case DECIMAL:
-                    calculationEngine = new DecimalLongCalculator();
-                    break;
-            }
+        switch (radix) {
+            case HEXADECIMAL:
+                calculationEngine = new HexadecimalLongCalculator();
+                break;
+            case DECIMAL:
+                calculationEngine = new DecimalLongCalculator();
+                break;
+            default:
+                throw new IllegalArgumentException(
+                        String.format(UNSUPPORTED_RADIX, inputedRadix));
         }
-
     }
 
-
 }
+
+
+

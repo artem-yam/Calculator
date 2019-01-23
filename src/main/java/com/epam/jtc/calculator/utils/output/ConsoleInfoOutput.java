@@ -1,5 +1,7 @@
 package com.epam.jtc.calculator.utils.output;
 
+import java.util.List;
+
 public class ConsoleInfoOutput implements InfoOutput {
 
     private final static String RADIX_REQUEST = "Input radix: \n";
@@ -23,8 +25,10 @@ public class ConsoleInfoOutput implements InfoOutput {
     }
 
     @Override
-    public void showOperationResult(String result) {
-        System.out.printf(OPERATION_RESULT, result);
+    public void showOperationResults(List<String> results) {
+        for (String result : results) {
+            System.out.printf(OPERATION_RESULT, result);
+        }
     }
 
 

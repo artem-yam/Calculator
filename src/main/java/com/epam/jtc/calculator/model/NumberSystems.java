@@ -1,11 +1,11 @@
 package com.epam.jtc.calculator.model;
 
-public enum SupportedNumberSystemEnum {
-    DECIMAL("10"), HEXADECIMAL("16");
+public enum NumberSystems {
+    DECIMAL("10"), HEXADECIMAL("16"), UNSUPPORTED("");
 
     private final String radix;
 
-    SupportedNumberSystemEnum(String radix) {
+    NumberSystems(String radix) {
         this.radix = radix;
     }
 

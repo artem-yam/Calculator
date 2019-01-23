@@ -1,11 +1,11 @@
 package com.epam.jtc.calculator.model;
 
-public enum SupportedOperationsEnum {
-    ADD("+"), SUBTRACT("-"), MULTIPLY("*"), DIVIDE("/");
+public enum Operations {
+    ADD("+"), SUBTRACT("-"), MULTIPLY("*"), DIVIDE("/"), UNSUPPORTED("");
 
     private final String sign;
 
-    SupportedOperationsEnum(String sign) {
+    Operations(String sign) {
         this.sign = sign;
     }
 
