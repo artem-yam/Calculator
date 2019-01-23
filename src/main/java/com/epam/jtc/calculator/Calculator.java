@@ -1,8 +1,8 @@
 package com.epam.jtc.calculator;
 
 import com.epam.jtc.calculator.model.CalculatorConfigurator;
-import com.epam.jtc.calculator.utils.ExpressionReformer;
 import com.epam.jtc.calculator.model.SupportedOperationsEnum;
+import com.epam.jtc.calculator.utils.ExpressionReformer;
 import com.epam.jtc.calculator.utils.input.ConsoleInfoInput;
 import com.epam.jtc.calculator.utils.input.InfoInput;
 import com.epam.jtc.calculator.utils.output.ConsoleInfoOutput;
@@ -49,7 +49,7 @@ public class Calculator {
                 configuration.selectCalculationEngine(infoInput.getNextLine());
 
             } catch (IllegalArgumentException illegalArgumentException) {
-                infoOutput.showUnsupportedRadixError(
+                infoOutput.showError(
                         illegalArgumentException);
             }
 
@@ -79,7 +79,7 @@ public class Calculator {
             expressionReformer.formArgumentsAndOperatorsLists(arguments,
                     operators, expression);
         } catch (IllegalArgumentException illegalArgumentException) {
-            infoOutput.showTooManyOperatorsWarning(illegalArgumentException);
+            infoOutput.showError(illegalArgumentException);
         }
 
         if (!arguments.isEmpty()) {
@@ -110,7 +110,7 @@ public class Calculator {
 
         for (SupportedOperationsEnum supportedOperation :
                 SupportedOperationsEnum
-                .values()) {
+                        .values()) {
             if (suggestedOperation.equals(supportedOperation.getSign())) {
                 operation = supportedOperation;
                 break;
@@ -149,10 +149,8 @@ public class Calculator {
 
             }
         } catch (NumberFormatException numberFormatException) {
-            infoOutput.showWrongNumberFormatError(
-                    numberFormatException.getMessage());
+            infoOutput.showError(numberFormatException);
         }
-
 
         return result;
     }
