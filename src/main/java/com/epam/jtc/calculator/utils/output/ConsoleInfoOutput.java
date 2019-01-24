@@ -1,5 +1,7 @@
 package com.epam.jtc.calculator.utils.output;
 
+import com.epam.jtc.calculator.model.OperationData;
+
 import java.util.List;
 
 public class ConsoleInfoOutput implements InfoOutput {
@@ -11,7 +13,7 @@ public class ConsoleInfoOutput implements InfoOutput {
     private final static String EMPTY_EXPRESSION = "Empty expression! ";
     private final static String NUMBER_FORMAT_EXCEPTION_MESSAGE =
             "%s: Argument is too long or contains unsupported " +
-                    "characters for current number system. ";
+                    "characters for current number system. \n";
 
 
     @Override
@@ -25,9 +27,9 @@ public class ConsoleInfoOutput implements InfoOutput {
     }
 
     @Override
-    public void showOperationResults(List<String> results) {
-        for (String result : results) {
-            System.out.printf(OPERATION_RESULT, result);
+    public void showOperationsResults(List<OperationData> operations) {
+        for (OperationData operation : operations) {
+            System.out.printf(OPERATION_RESULT, operation.calculate());
         }
     }
 

@@ -10,22 +10,22 @@ public class HexadecimalLongCalculator extends BasicLongCalculator {
 
     @Override
     public String add(String x, String y) {
-        return Long.toHexString(add(parseToLong(x), parseToLong(y)));
+        return Long.toHexString(addWithParsing(x, y));
     }
 
     @Override
     public String subtract(String x, String y) {
-        return Long.toHexString(subtract(parseToLong(x), parseToLong(y)));
+        return Long.toHexString(subtractWithParsing(x, y));
     }
 
     @Override
     public String multiply(String x, String y) {
-        return Long.toHexString(multiply(parseToLong(x), parseToLong(y)));
+        return Long.toHexString(multiplyWithParsing(x, y));
     }
 
     @Override
-        public String divide(String x, String y) {
-        return Long.toHexString(divide(parseToLong(x), parseToLong(y)));
+    public String divide(String x, String y) {
+        return Long.toHexString(divideWithParsing(x, y));
     }
 
 }

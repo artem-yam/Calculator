@@ -10,21 +10,21 @@ public class DecimalLongCalculator extends BasicLongCalculator {
 
     @Override
     public String add(String x, String y) {
-        return Long.toString(add(parseToLong(x), parseToLong(y)));
+        return Long.toString(addWithParsing(x, y));
     }
 
     @Override
     public String subtract(String x, String y) {
-        return Long.toString(subtract(parseToLong(x), parseToLong(y)));
+        return Long.toString(subtractWithParsing(x, y));
     }
 
     @Override
     public String multiply(String x, String y) {
-        return Long.toString(multiply(parseToLong(x), parseToLong(y)));
+        return Long.toString(multiplyWithParsing(x, y));
     }
 
     @Override
     public String divide(String x, String y) {
-        return Long.toString(divide(parseToLong(x), parseToLong(y)));
+        return Long.toString(divideWithParsing(x, y));
     }
 }

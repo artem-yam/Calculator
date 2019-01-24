@@ -1,25 +1,22 @@
-package com.epam.jtc.calculator.model;
+package com.epam.jtc.calculator.model.calculatorEngine.factory;
 
 import com.epam.jtc.calculator.model.calculatorEngine.CalculatorEngine;
 import com.epam.jtc.calculator.model.calculatorEngine.DecimalLongCalculator;
 import com.epam.jtc.calculator.model.calculatorEngine.HexadecimalLongCalculator;
 
-public class CalculatorConfigurator {
+public class EngineFactory {
 
     private final static String UNSUPPORTED_RADIX = "Unsupported radix: %s. ";
 
-    private CalculatorEngine calculationEngine = null;
-
-    public CalculatorEngine getCalculationEngine() {
-        return calculationEngine;
+    private EngineFactory() {
     }
 
-    public void selectCalculationEngine(String inputedRadix) {
+    public static CalculatorEngine getCalculationEngine(
+            String inputedRadix) {
+        CalculatorEngine calculationEngine;
         NumberSystems radix = NumberSystems.UNSUPPORTED;
 
-        for (NumberSystems supportedRadix :
-                NumberSystems
-                        .values()) {
+        for (NumberSystems supportedRadix : NumberSystems.values()) {
             if (supportedRadix.getRadix().equals(inputedRadix)) {
                 radix = supportedRadix;
                 break;
@@ -37,6 +34,9 @@ public class CalculatorConfigurator {
                 throw new IllegalArgumentException(
                         String.format(UNSUPPORTED_RADIX, inputedRadix));
         }
+
+
+        return calculationEngine;
     }
 
 }

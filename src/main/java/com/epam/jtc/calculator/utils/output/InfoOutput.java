@@ -1,5 +1,7 @@
 package com.epam.jtc.calculator.utils.output;
 
+import com.epam.jtc.calculator.model.OperationData;
+
 import java.util.List;
 
 public interface InfoOutput {
@@ -8,7 +10,7 @@ public interface InfoOutput {
 
     void showExpressionRequest();
 
-    void showOperationResults(List<String> results);
+    void showOperationsResults(List<OperationData> operations);
 
     void showError(Throwable exception);
 

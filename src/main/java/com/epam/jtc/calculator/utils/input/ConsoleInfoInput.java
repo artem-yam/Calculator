@@ -6,6 +6,7 @@ public class ConsoleInfoInput implements InfoInput {
 
     private Scanner scanner = new Scanner(System.in);
 
+
     @Override
     public String getNextLine() {
         return scanner.nextLine().trim();
