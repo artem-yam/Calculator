@@ -7,63 +7,92 @@ public class ExpressionReformer {
     private static final String REGEX_TO_SPLIT_OPERATIONS_VALUES =
             "[()\\s]*[+\\-*/]+[()\\s]*";
     private static final String REGEX_TO_SPLIT_OPERATIONS_SIGNS =
-            "[()\\s]*[.,\\w[а-яА-Я]*]+[()\\s]*";
+            "[()\\s]*[.,\\w[а-яА-Я]]+[()\\s]*";
     private static final String UNSUPPORTED_OPERATION =
             "Unsupported operation %s.";
     private static final String TOO_MANY_OPERATORS = "Too many operators! ";
+    private static final String OPERATOR_ADD = "+";
 
     private ExpressionReformer() {
     }
 
-    public static List<OperationData> formOperationsList(
+    public static List<OperationData> reformToOperationsList(
             String expression, OperationExecutor executor) {
-
-        List<OperationData> operations = new ArrayList<>();
 
         String[] arguments = expression.split(REGEX_TO_SPLIT_OPERATIONS_VALUES);
         String[] operators = expression.split(REGEX_TO_SPLIT_OPERATIONS_SIGNS);
 
-        if (operators.length > arguments.length) {
-            throw new IllegalArgumentException(TOO_MANY_OPERATORS);
+        if (operators.length <= arguments.length) {
+
+            return formOperationsList(arguments, operators, executor);
+
         } else {
+            throw new IllegalArgumentException(TOO_MANY_OPERATORS);
+        }
 
-            String result = "";
-
-            for (int i = 0; i < arguments.length; i++) {
-                Operations operation = Operations.UNSUPPORTED;
-
-                if (i == 0) {
-                    operation = Operations.ADD;
-                } else {
-                    for (Operations supportedOperation : Operations.values()) {
-                        if (supportedOperation.getSign().equals(operators[i])) {
-                            operation = supportedOperation;
-                            break;
-                        }
-                    }
-                }
-
-                if (operation == Operations.UNSUPPORTED) {
-                    throw new IllegalArgumentException(
-                            String.format(UNSUPPORTED_OPERATION, operators[i]));
-                }
-
-                OperationData operationData = new OperationData(result,
-                        arguments[i], operation);
+    }
 
 
-                if (!(arguments.length > 1 && i == 0)) {
-                    operations.add(operationData);
-                }
+    private static List<OperationData> formOperationsList(
+            String[] arguments,
+            String[] operators,
+            OperationExecutor executor) {
 
+        List<OperationData> operations = new ArrayList<>();
 
-                result = executor.calculate(operationData);
+        String result = "";
+
+        for (int i = 0; i < arguments.length; i++) {
+
+            String operator;
+            if (i != 0) {
+                operator = operators[i];
+            } else {
+                operator = OPERATOR_ADD;
             }
 
+            OperationData operationData =
+                    formSingleOperation(operator, result,
+                            arguments[i]);
+
+            // if expression have more than 1 argument
+            // don't add first operation (this argument + 0)
+            // to list for output
+            if (!(arguments.length > 1 && i == 0)) {
+                operations.add(operationData);
+            }
+
+            result = executor.calculate(operationData);
 
         }
 
         return operations;
+    }
+
+    private static OperationData formSingleOperation(
+            String operator,
+            String argumentX, String argumentY) {
+
+        OperationType operationType = OperationType.UNSUPPORTED;
+
+        for (OperationType supportedOperation : OperationType
+                .values()) {
+            if (supportedOperation.getSign().equals(operator)) {
+                operationType = supportedOperation;
+                break;
+            }
+        }
+
+        if (operationType != OperationType.UNSUPPORTED) {
+
+            return new OperationData(argumentX,
+                    argumentY, operationType);
+
+        } else {
+            throw new IllegalArgumentException(
+                    String.format(UNSUPPORTED_OPERATION, operator));
+        }
+
     }
 
 }

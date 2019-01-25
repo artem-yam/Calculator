@@ -1,9 +1,9 @@
 package com.epam.jtc.calculator;
 
-import com.epam.jtc.calculator.model.calculatorOperations.OperationData;
 import com.epam.jtc.calculator.model.calculatorEngine.CalculatorEngine;
 import com.epam.jtc.calculator.model.calculatorEngine.factory.EngineFactory;
 import com.epam.jtc.calculator.model.calculatorOperations.ExpressionReformer;
+import com.epam.jtc.calculator.model.calculatorOperations.OperationData;
 import com.epam.jtc.calculator.model.calculatorOperations.OperationExecutor;
 import com.epam.jtc.calculator.utils.input.ConsoleInfoInput;
 import com.epam.jtc.calculator.utils.input.InfoInput;
@@ -29,45 +29,48 @@ public class Calculator {
     }
 
     public void startCalculations() {
+        try {
+            do {
+                infoOutput.showRadixRequest();
 
-        do {
-            infoOutput.showRadixRequest();
-
-            try {
-                calculationEngine = EngineFactory.getCalculationEngine(
-                        infoInput.getNextLine());
-
-            } catch (IllegalArgumentException illegalArgumentException) {
-                infoOutput.showError(illegalArgumentException);
-            }
-
-        } while (calculationEngine == null);
-
-        infoOutput.showExpressionRequest();
-
-        do {
-
-            String expression = infoInput.getNextLine();
-
-            if (!expression.isEmpty()) {
                 try {
-
-                    infoOutput.showOperationsResults(
-                            getExpressionResults(expression));
+                    calculationEngine = EngineFactory.getCalculationEngine(
+                            infoInput.getNextLine());
 
                 } catch (IllegalArgumentException illegalArgumentException) {
                     infoOutput.showError(illegalArgumentException);
                 }
 
-            } else {
-                infoOutput.showEmptyInputWarning();
-            }
+            } while (calculationEngine == null);
 
             infoOutput.showExpressionRequest();
 
-        } while (infoInput.canRead());
+            do {
 
-        infoInput.closeResource();
+                String expression = infoInput.getNextLine();
+
+                if (!expression.isEmpty()) {
+                    try {
+
+                        infoOutput.showOperationsResults(
+                                getExpressionResults(expression));
+
+                    } catch (IllegalArgumentException | ArithmeticException exception) {
+                        infoOutput.showError(exception);
+                    }
+
+                } else {
+                    infoOutput.showEmptyInputWarning();
+                }
+
+                infoOutput.showExpressionRequest();
+
+            } while (infoInput.canRead());
+
+        } finally {
+            infoInput.closeResource();
+        }
+
     }
 
 
@@ -77,7 +80,7 @@ public class Calculator {
         OperationExecutor executor = new OperationExecutor(calculationEngine);
 
         List<OperationData> operations =
-                ExpressionReformer.formOperationsList(expression,
+                ExpressionReformer.reformToOperationsList(expression,
                         executor);
 
         for (OperationData operation : operations) {

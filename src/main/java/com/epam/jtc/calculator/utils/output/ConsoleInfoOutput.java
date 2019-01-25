@@ -12,6 +12,8 @@ public class ConsoleInfoOutput implements InfoOutput {
     private final static String NUMBER_FORMAT_EXCEPTION_MESSAGE =
             "%s: Argument is too long or contains unsupported " +
                     "characters for current number system. \n";
+    private final static String ARITHMETIC_EXCEPTION_MESSAGE =
+            "Arithmetic Exception: %s \n";
 
 
     @Override
@@ -34,9 +36,11 @@ public class ConsoleInfoOutput implements InfoOutput {
 
     @Override
     public void showError(Throwable exception) {
-
-        if (exception.getClass().equals(NumberFormatException.class)) {
+        if (exception instanceof NumberFormatException) {
             System.err.format(NUMBER_FORMAT_EXCEPTION_MESSAGE,
+                    exception.getMessage());
+        } else if (exception instanceof ArithmeticException) {
+            System.err.format(ARITHMETIC_EXCEPTION_MESSAGE,
                     exception.getMessage());
         } else {
             System.err.println(exception.getMessage());

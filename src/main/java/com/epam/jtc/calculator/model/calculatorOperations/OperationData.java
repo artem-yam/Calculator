@@ -4,12 +4,16 @@ public class OperationData {
 
     private String x;
     private String y;
-    private Operations operation;
+    private OperationType operationType;
 
-    public OperationData(String x, String y, Operations operation) {
+    public OperationData(String x, String y, OperationType operation) {
         this.x = x;
         this.y = y;
-        this.operation = operation;
+        this.operationType = operation;
+    }
+
+    public OperationData() {
+
     }
 
     public String getX() {
@@ -28,12 +32,12 @@ public class OperationData {
         this.y = y;
     }
 
-    public Operations getOperation() {
-        return operation;
+    public OperationType getOperationType() {
+        return operationType;
     }
 
-    public void setOperation(Operations operation) {
-        this.operation = operation;
+    public void setOperationType(OperationType operationType) {
+        this.operationType = operationType;
     }
 
 }

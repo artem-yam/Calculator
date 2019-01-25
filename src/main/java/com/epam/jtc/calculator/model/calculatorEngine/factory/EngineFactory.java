@@ -14,9 +14,9 @@ public class EngineFactory {
     public static CalculatorEngine getCalculationEngine(
             String inputedRadix) {
         CalculatorEngine calculationEngine;
-        NumberSystems radix = NumberSystems.UNSUPPORTED;
+        NumberSystem radix = NumberSystem.UNSUPPORTED;
 
-        for (NumberSystems supportedRadix : NumberSystems.values()) {
+        for (NumberSystem supportedRadix : NumberSystem.values()) {
             if (supportedRadix.getRadix().equals(inputedRadix)) {
                 radix = supportedRadix;
                 break;

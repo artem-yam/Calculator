@@ -15,35 +15,46 @@ public class OperationExecutor {
 
     public String calculate(OperationData operationData) {
         String result = "";
+        String x = operationData.getX();
+        String y = operationData.getY();
 
-        if (operationData.getX().isEmpty()) {
-            result = calculationEngine
-                    .add(STRING_WITH_ZERO, operationData.getY());
-        } else if (operationData.getY().isEmpty()) {
-            result = calculationEngine
-                    .add(operationData.getX(), STRING_WITH_ZERO);
-        } else {
+        // if one of arguments is empty
+        if (x.isEmpty() || y.isEmpty()) {
+            OperationData defaultOperationData = new OperationData();
 
-            switch (operationData.getOperation()) {
-                case ADD:
-                    result = calculationEngine
-                            .add(operationData.getX(), operationData.getY());
-                    break;
-                case SUBTRACT:
-                    result = calculationEngine
-                            .subtract(operationData.getX(),
-                                    operationData.getY());
-                    break;
-                case MULTIPLY:
-                    result = calculationEngine
-                            .multiply(operationData.getX(),
-                                    operationData.getY());
-                    break;
-                case DIVIDE:
-                    result = calculationEngine
-                            .divide(operationData.getX(), operationData.getY());
-                    break;
-            }
+            defaultOperationData.setOperationType(OperationType.ADD);
+
+            defaultOperationData.setX(x.isEmpty() ? STRING_WITH_ZERO : x);
+            defaultOperationData.setY(y.isEmpty() ? STRING_WITH_ZERO : y);
+
+            operationData = defaultOperationData;
+        }
+
+        return execute(operationData);
+    }
+
+
+    private String execute(OperationData operationData) {
+        String result = "";
+        switch (operationData.getOperationType()) {
+            case ADD:
+                result = calculationEngine
+                        .add(operationData.getX(), operationData.getY());
+                break;
+            case SUBTRACT:
+                result = calculationEngine
+                        .subtract(operationData.getX(),
+                                operationData.getY());
+                break;
+            case MULTIPLY:
+                result = calculationEngine
+                        .multiply(operationData.getX(),
+                                operationData.getY());
+                break;
+            case DIVIDE:
+                result = calculationEngine
+                        .divide(operationData.getX(), operationData.getY());
+                break;
         }
 
         return result;
