@@ -10,7 +10,7 @@ public interface InfoOutput {
 
     void showExpressionRequest();
 
-    void showOperationsResults(List<OperationData> operations);
+    void showOperationsResults(List<String> results);
 
     void showError(Throwable exception);
 

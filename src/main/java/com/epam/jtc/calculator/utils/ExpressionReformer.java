@@ -17,8 +17,9 @@ public class ExpressionReformer {
     private static final String TOO_MANY_OPERATORS = "Too many operators! ";
 
 
-    public List<OperationData> formOperationsList(String expression,
-            CalculatorEngine calculationEngine) {
+    public static List<OperationData> formOperationsList(
+            String expression,  OperationExecutor executor) {
+
         List<OperationData> operations = new ArrayList<>();
 
         String[] arguments = expression.split(REGEX_TO_SPLIT_OPERATIONS_VALUES);
@@ -50,7 +51,7 @@ public class ExpressionReformer {
                 }
 
                 OperationData operationData = new OperationData(result,
-                        arguments[i], operation, calculationEngine);
+                        arguments[i], operation);
 
 
                 if (!(arguments.length > 1 && i == 0)) {
@@ -58,7 +59,7 @@ public class ExpressionReformer {
                 }
 
 
-                result = operationData.calculate();
+                result = executor.calculate(operationData);
             }
 
 

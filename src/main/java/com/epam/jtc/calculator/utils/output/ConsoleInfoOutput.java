@@ -1,7 +1,5 @@
 package com.epam.jtc.calculator.utils.output;
 
-import com.epam.jtc.calculator.model.OperationData;
-
 import java.util.List;
 
 public class ConsoleInfoOutput implements InfoOutput {
@@ -27,9 +25,9 @@ public class ConsoleInfoOutput implements InfoOutput {
     }
 
     @Override
-    public void showOperationsResults(List<OperationData> operations) {
-        for (OperationData operation : operations) {
-            System.out.printf(OPERATION_RESULT, operation.calculate());
+    public void showOperationsResults(List<String> results) {
+        for (String result : results) {
+            System.out.printf(OPERATION_RESULT, result);
         }
     }
 

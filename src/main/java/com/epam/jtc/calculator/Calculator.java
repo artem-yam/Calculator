@@ -4,11 +4,13 @@ import com.epam.jtc.calculator.model.OperationData;
 import com.epam.jtc.calculator.model.calculatorEngine.CalculatorEngine;
 import com.epam.jtc.calculator.model.calculatorEngine.factory.EngineFactory;
 import com.epam.jtc.calculator.utils.ExpressionReformer;
+import com.epam.jtc.calculator.utils.OperationExecutor;
 import com.epam.jtc.calculator.utils.input.ConsoleInfoInput;
 import com.epam.jtc.calculator.utils.input.InfoInput;
 import com.epam.jtc.calculator.utils.output.ConsoleInfoOutput;
 import com.epam.jtc.calculator.utils.output.InfoOutput;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Calculator {
@@ -17,8 +19,6 @@ public class Calculator {
     private InfoInput infoInput = new ConsoleInfoInput();
 
     private CalculatorEngine calculationEngine = null;
-
-    private ExpressionReformer expressionReformer = new ExpressionReformer();
 
     public static void main(String[] args) {
 
@@ -51,11 +51,9 @@ public class Calculator {
 
             if (!expression.isEmpty()) {
                 try {
-                    List<OperationData> operations =
-                            expressionReformer.formOperationsList(expression,
-                                    calculationEngine);
 
-                    infoOutput.showOperationsResults(operations);
+                    infoOutput.showOperationsResults(
+                            getExpressionResults(expression));
 
                 } catch (IllegalArgumentException illegalArgumentException) {
                     infoOutput.showError(illegalArgumentException);
@@ -72,4 +70,20 @@ public class Calculator {
         infoInput.closeResource();
     }
 
+
+    private List<String> getExpressionResults(String expression) {
+
+        List<String> results = new ArrayList<>();
+        OperationExecutor executor = new OperationExecutor(calculationEngine);
+
+        List<OperationData> operations =
+                ExpressionReformer.formOperationsList(expression,
+                        executor);
+
+        for (OperationData operation : operations) {
+            results.add(executor.calculate(operation));
+        }
+
+        return results;
+    }
 }
