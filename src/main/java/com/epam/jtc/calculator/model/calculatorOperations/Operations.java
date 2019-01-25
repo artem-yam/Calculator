@@ -1,4 +1,4 @@
-package com.epam.jtc.calculator.model;
+package com.epam.jtc.calculator.model.calculatorOperations;
 
 public enum Operations {
     ADD("+"), SUBTRACT("-"), MULTIPLY("*"), DIVIDE("/"), UNSUPPORTED("");

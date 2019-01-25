@@ -1,6 +1,5 @@
-package com.epam.jtc.calculator.utils;
+package com.epam.jtc.calculator.model.calculatorOperations;
 
-import com.epam.jtc.calculator.model.OperationData;
 import com.epam.jtc.calculator.model.calculatorEngine.CalculatorEngine;
 
 public class OperationExecutor {

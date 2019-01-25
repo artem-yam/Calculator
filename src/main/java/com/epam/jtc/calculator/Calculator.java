@@ -1,10 +1,10 @@
 package com.epam.jtc.calculator;
 
-import com.epam.jtc.calculator.model.OperationData;
+import com.epam.jtc.calculator.model.calculatorOperations.OperationData;
 import com.epam.jtc.calculator.model.calculatorEngine.CalculatorEngine;
 import com.epam.jtc.calculator.model.calculatorEngine.factory.EngineFactory;
-import com.epam.jtc.calculator.utils.ExpressionReformer;
-import com.epam.jtc.calculator.utils.OperationExecutor;
+import com.epam.jtc.calculator.model.calculatorOperations.ExpressionReformer;
+import com.epam.jtc.calculator.model.calculatorOperations.OperationExecutor;
 import com.epam.jtc.calculator.utils.input.ConsoleInfoInput;
 import com.epam.jtc.calculator.utils.input.InfoInput;
 import com.epam.jtc.calculator.utils.output.ConsoleInfoOutput;

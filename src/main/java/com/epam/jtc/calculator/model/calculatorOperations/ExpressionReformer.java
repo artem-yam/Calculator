@@ -1,8 +1,4 @@
-package com.epam.jtc.calculator.utils;
-
-import com.epam.jtc.calculator.model.OperationData;
-import com.epam.jtc.calculator.model.Operations;
-import com.epam.jtc.calculator.model.calculatorEngine.CalculatorEngine;
+package com.epam.jtc.calculator.model.calculatorOperations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +12,11 @@ public class ExpressionReformer {
             "Unsupported operation %s.";
     private static final String TOO_MANY_OPERATORS = "Too many operators! ";
 
+    private ExpressionReformer() {
+    }
 
     public static List<OperationData> formOperationsList(
-            String expression,  OperationExecutor executor) {
+            String expression, OperationExecutor executor) {
 
         List<OperationData> operations = new ArrayList<>();
 

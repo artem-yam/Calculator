@@ -1,4 +1,4 @@
-package com.epam.jtc.calculator.model;
+package com.epam.jtc.calculator.model.calculatorOperations;
 
 public class OperationData {
 
